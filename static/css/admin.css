@@ -1,0 +1,84 @@
+/* Basic Styling */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 30px;
+}
+
+h2 {
+  color: #2980b9;
+  margin-bottom: 15px;
+}
+
+/* Container for the form */
+.form-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form elements */
+label {
+  font-weight: bold;
+  color: #34495e;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #ecf0f1;
+}
+
+button[type="submit"] {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+  background-color: #3498db;
+}
+
+/* Form sections */
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive design for small screens */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 15px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+  }
+}

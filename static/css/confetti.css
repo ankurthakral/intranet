@@ -1,0 +1,77 @@
+/* Confetti Canvas Overlay */
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+#confettiText {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ff69b4,
+      0 0 40px #ff69b4;
+  }
+  to {
+    text-shadow: 0 0 20px #ffffff, 0 0 30px #ff69b4, 0 0 40px #ff69b4,
+      0 0 50px #ff69b4;
+  }
+}
+
+.party-popper {
+  position: absolute;
+  bottom: -100px;
+  width: 80px;
+  height: 150px;
+  background: url("/static/image/party-popper.png") no-repeat center / cover;
+  animation: popper-rise 2s ease-out forwards,
+    popper-disappear 0.5s 2.5s forwards;
+}
+
+.left-popper {
+  left: 10%;
+  transform: rotate(30deg);
+}
+
+.right-popper {
+  right: 10%;
+  transform: rotate(-30deg);
+}
+
+@keyframes popper-rise {
+  0% {
+    bottom: -100px;
+  }
+  100% {
+    bottom: 20px;
+  }
+}
+
+@keyframes popper-disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
