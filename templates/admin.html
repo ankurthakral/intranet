@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="static/css/admin.css">
+
+</head>
+
+<body>
+  <h1>Admin Panel</h1>
+
+  <div class="form-container">
+    <!-- YouTube Video Form -->
+    <div class="form-section">
+      <h2>Add YouTube Video</h2>
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+        <label for="youtube_title">Video Title:</label>
+        <input type="text" name="youtube_title" required>
+
+        <label for="youtube_link">YouTube Link:</label>
+        <input type="url" name="youtube_link" required>
+
+        <button type="submit">Add Video</button>
+      </form>
+    </div>
+
+    <!-- Announcement Form -->
+    <div class="form-section">
+      <h2>Add Announcement</h2>
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+
+        <label for="announcement_text">Announcement Text:</label>
+        <input type="text" name="announcement_text" required>
+
+        <label for="announcement_link_or_file">Link:</label>
+        <input type="url" name="announcement_link_or_file">
+
+        <label for="announcement_file">Or Upload File:</label>
+        <input type="file" name="announcement_file">
+
+        <button type="submit">Add Announcement</button>
+      </form>
+    </div>
+
+    <!-- WebX Meeting Link Form -->
+    <div class="form-section">
+      <h2>Add WebX Meeting Link</h2>
+      <form method="POST" action="/admin">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+        <label for="meeting_link">WebX Meeting Link:</label>
+        <input type="url" id="meeting_link" name="meeting_link" required>
+
+        <label for="web_link_text">Web Link Text:</label>
+        <input type="text" id="web_link_text" name="web_link_text" required>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <div class="form-section">
+      <h2>Upload Image to Gallery</h2>
+      <form method="POST" enctype="multipart/form-data" action="/admin">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <label for="image_title">Image Title:</label>
+        <input type="text" name="image_title" required>
+
+        <label for="gallery_image">Upload Image:</label>
+        <input type="file" name="gallery_image" accept="image/*" required>
+
+        <button type="submit">Upload Image</button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

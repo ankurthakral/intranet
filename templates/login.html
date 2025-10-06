@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - RailTel Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+  <div class="container">
+    <img src="static/image/railtel-logo80.png" alt="RailTel Logo">
+    <h1>RailTel Event - Internal</h1>
+
+    <form id="loginForm" method="POST">
+      <input type="hidden" id="csrfToken" name="csrf_token" value="{{ csrf_token() }}">
+
+      <input type="email" id="loginEmail" name="email" placeholder="Enter RailTel Email ID" required>
+      <input type="password" id="loginPassword" name="password" placeholder="Enter Password" required>
+      <button type="button" onclick="login()">Login</button>
+    </form>
+
+    <a href="/register">Register Now</a> <br>
+    <a href="/forgot-password">Forgot your password?</a>
+  </div>
+
+  <script>
+    async function login() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const csrfToken = document.getElementById("csrfToken").value; // Get the CSRF token
+
+      if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("csrf_token", csrfToken); // Include the CSRF token
+
+        const response = await fetch("/", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.redirected) {
+          // Follow the backend redirect
+          window.location.href = response.url;
+        } else {
+          const result = await response.text();
+          if (result.includes("Invalid email or password")) {
+            alert("Login failed. Please check your credentials.");
+          } else {
+            alert("An unexpected error occurred. Please try again.");
+          }
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        alert("An error occurred during login. Please try again.");
+      }
+    }
+
+    // Add event listeners for Enter key press on both email and password fields
+    document.getElementById("loginEmail").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        login(); // Call the login function
+      }
+    });
+
+    document.getElementById("loginPassword").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        login(); // Call the login function
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>

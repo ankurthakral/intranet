@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - RailTel Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+  <div class="container">
+    <img src="static/image/railtel-logo80.png" alt="RailTel Logo">
+    <h1>RailTel Event - Internal</h1>
+
+    <form id="loginForm" method="POST">
+      <input type="hidden" id="csrfToken" name="csrf_token" value="{{ csrf_token() }}">
+
+      <input type="email" id="loginEmail" name="email" placeholder="Enter RailTel Email ID" required>
+      <input type="password" id="loginPassword" name="password" placeholder="Enter Password" required>
+      <button type="button" onclick="login()">Login</button>
+    </form>
+
+
+    <a href="#" onclick="showRegisterForm()">Register Now</a>
+
+    <!-- Registration Form -->
+    <form id="registerForm" style="display: none;">
+      <input type="hidden" id="csrfToken" name="csrf_token" value="{{ csrf_token() }}">
+      <!-- CSRF token for security -->
+
+      <input type="text" id="firstName" name="first_name" placeholder="First Name" required>
+      <input type="text" id="lastName" name="last_name" placeholder="Last Name" required>
+      <input type="email" id="registerEmail" name="email" placeholder="RailTel Mail ID" required>
+      <div style="position: relative; width: 100%; margin: 10px 0;">
+        <input type="password" id="registerPassword" name="password" placeholder="Password" required
+          style="width: calc(100% - 45px); padding-right: 30px;">
+        <span style="
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: gray;
+            cursor: pointer;
+          "
+          title="Password must be at least 12 characters long, include uppercase, lowercase, numbers, and special characters.">
+          ℹ️
+        </span>
+      </div>
+      <!-- <input type="text" id="employeeId" placeholder="Employee ID" required> -->
+      <button type="button" onclick="sendRegisterOTP()">Send OTP</button>
+    </form>
+
+    <!-- OTP Section -->
+    <div id="otpSection" style="display: none;">
+      <div class="otp-input-container">
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+      </div>
+      <button type="button" onclick="validateRegisterOTP()">Validate OTP</button>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("loginForm").style.display = "block";
+      document.getElementById("registerForm").style.display = "none";
+      document.getElementById("otpSection").style.display = "none";
+    });
+
+    function showRegisterForm() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("registerForm").style.display = "block";
+      document.getElementById("otpSection").style.display = "none";
+    }
+
+    async function sendRegisterOTP() {
+      const email = document.getElementById("registerEmail").value.trim();
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const password = document.getElementById("registerPassword").value.trim();
+      const csrfToken = document.getElementById("csrfToken").value; // Get the CSRF token
+      console.log({ email, firstName, lastName, password });
+
+      // Validate form fields
+      const nameRegex = /^[a-zA-Z]+$/;
+      if (!firstName || !nameRegex.test(firstName)) {
+        alert("First name should only contain letters.");
+        return;
+      }
+
+      if (!lastName || !nameRegex.test(lastName)) {
+        alert("Last name should only contain letters.");
+        return;
+      }
+
+      if (!email.endsWith("@railtelindia.com")) {
+        alert("Please enter a valid RailTel India email ID.");
+        return;
+      }
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+      if (!password || !passwordRegex.test(password)) {
+        alert("Password must be at least 12 characters long and include uppercase, lowercase, numbers, and special characters.");
+        return;
+      }
+
+      // Send data to Flask backend
+      try {
+        const formData = new FormData();
+        formData.append("firstName", firstName);
+        formData.append("lastName", lastName);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("csrf_token", csrfToken); // Include the CSRF token
+
+        const response = await fetch('/register', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.redirected) {
+          // Follow the backend redirect
+          window.location.href = response.url;
+        } else {
+          const result = await response.text();
+          console.log({ result });
+          if (result.includes("OTP sent")) {
+            alert("OTP sent to your email address.");
+          }
+          if (result.includes("Failed to send OTP")) {
+            alert("Failed to send OTP, please contact SOC Support.");
+          } else {
+            alert("Registration failed. Please try again.");
+          }
+        }
+      } catch (error) {
+        alert("An error occurred: " + error.message);
+      }
+    }
+
+    async function validateRegisterOTP() {
+      const otpInputs = document.querySelectorAll(".otp-input");
+      const otp = Array.from(otpInputs).map(input => input.value.trim()).join("");
+
+      if (otp.length !== 6 || !/^\d+$/.test(otp)) {
+        alert("Please enter a valid 6-digit OTP.");
+        return;
+      }
+
+      // Simulate API call for OTP validation
+      try {
+        const response = await fetch('/validate-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ otp }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert("You are registered successfully.");
+          document.getElementById("otpSection").style.display = "none";
+          document.getElementById("loginForm").style.display = "block";
+        } else {
+          alert(data.message || "Invalid OTP. Please try again.");
+        }
+      } catch (error) {
+        alert("An error occurred while validating OTP. Please try again.");
+      }
+    }
+
+    document.querySelectorAll(".otp-input").forEach((input, index, inputs) => {
+      input.addEventListener("input", () => {
+        if (input.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+    });
+
+    async function login() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const csrfToken = document.getElementById("csrfToken").value; // Get the CSRF token
+
+      if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("csrf_token", csrfToken); // Include the CSRF token
+
+        const response = await fetch("/", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.redirected) {
+          // Follow the backend redirect
+          window.location.href = response.url;
+        } else {
+          const result = await response.text();
+          if (result.includes("Invalid email or password")) {
+            alert("Login failed. Please check your credentials.");
+          } else {
+            alert("An unexpected error occurred. Please try again.");
+          }
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        alert("An error occurred during login. Please try again.");
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

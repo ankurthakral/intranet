@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - RailTel Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+  <div class="container">
+    <img src="static/image/railtel-logo80.png" alt="RailTel Logo">
+    <h1>RailTel Event - Internal</h1>
+
+    <!-- Registration Form -->
+    <form id="registerForm">
+      <input type="hidden" id="csrfToken" name="csrf_token" value="{{ csrf_token() }}">
+      <!-- CSRF token for security -->
+
+      <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+      <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+      <input type="email" id="registerEmail" name="email" placeholder="RailTel Mail ID" required>
+      <div style="position: relative; width: 100%; margin: 10px 0;">
+        <input type="password" id="registerPassword" name="password" placeholder="Password" required
+          style="width: calc(100% - 45px); padding-right: 30px;">
+        <span style="
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: gray;
+            cursor: pointer;
+          "
+          title="Password must be at least 12 characters long, include uppercase, lowercase, numbers, and special characters.">
+          ℹ️
+        </span>
+      </div>
+      <!-- <input type="text" id="employeeId" placeholder="Employee ID" required> -->
+      <button type="button" onclick="Register()">Send OTP</button>
+    </form>
+
+  </div>
+
+  <script>
+
+    async function Register() {
+      const email = document.getElementById("registerEmail").value.trim();
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const password = document.getElementById("registerPassword").value.trim();
+      const csrfToken = document.getElementById("csrfToken").value; // Get the CSRF token
+
+
+      // Validate form fields
+      const nameRegex = /^[a-zA-Z]+$/;
+      if (!firstName || !nameRegex.test(firstName)) {
+        alert("First name should only contain letters.");
+        return;
+      }
+
+      if (!lastName || !nameRegex.test(lastName)) {
+        alert("Last name should only contain letters.");
+        return;
+      }
+
+      if (!email.endsWith("@railtelindia.com")) {
+        alert("Please enter a valid RailTel India email ID.");
+        return;
+      }
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{12,}$/;
+      if (!password || !passwordRegex.test(password)) {
+        alert("Password must be at least 12 characters long and include uppercase, lowercase, numbers, and special characters.");
+        return;
+      }
+
+      // Send data to Flask backend
+      try {
+        const formData = new FormData();
+        formData.append("firstName", firstName);
+        formData.append("lastName", lastName);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("csrf_token", csrfToken); // Include the CSRF token
+
+        const response = await fetch('/register', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.redirected) {
+          // Follow the backend redirect
+          window.location.href = response.url;
+        } else {
+          const result = await response.text();
+          // console.log({ result });
+          if (result.includes("OTP sent")) {
+            alert("OTP sent to your email address.");
+          }
+          if (result.includes("Failed to send OTP")) {
+            alert("Failed to send OTP, please contact SOC Support.");
+          } else {
+            alert("Registration failed. Please try again.");
+          }
+        }
+      } catch (error) {
+        alert("An error occurred: " + error.message);
+      }
+    }
+
+    // Add event listeners for Enter key press on form fields
+    document.getElementById("firstName").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        Register(); // Call the Register function
+      }
+    });
+
+    document.getElementById("lastName").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        Register(); // Call the Register function
+      }
+    });
+
+    document.getElementById("registerEmail").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        Register(); // Call the Register function
+      }
+    });
+
+    document.getElementById("registerPassword").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        Register(); // Call the Register function
+      }
+    });
+  </script>
+
+</body>
+
+</html>

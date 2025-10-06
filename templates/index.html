@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailTel 25th Anniversary</title>
+  <link id="theme-link" rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/confetti.css">
+
+</head>
+
+<body>
+  <!-- Video Background -->
+  <video autoplay muted loop id="background-video">
+    <source src="static/image/bg_wave.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Header Section -->
+  <header>
+    <!-- Left Section: Logo and RailTel -->
+    <div class="header-left">
+      <img src="static/image/railtel-logo80.png" alt="RailTel Logo" class="logo" />
+      <span class="railtel-text">RailTel Corporation Of India Ltd.</span>
+    </div>
+
+    <!-- Center Section: Silver Jubilee Connect -->
+    <h1 class="header-center">
+      <!-- <span class="jubilee-text">Silver Jubilee Celebration</span> -->
+      <img class="jubilee-text" src="static/image/cooltext473333044060046.png" alt="">
+    </h1>
+    <!-- Right Section: Badge and Employee ID -->
+    <div class="header-right">
+      <!-- <img src="static/image/gold.png" alt="Badge" class="badge" /> <br> -->
+      <!-- <span class="employee-id">Employee ID: 12345</span> -->
+
+      <!-- Theme Toggle Icon -->
+      <button id="theme-toggle" class="theme-toggle-button">
+        <!-- Add this inside the header-right section -->
+        <img id="theme-icon" src="static/image/dark.png" alt="Theme Icon" style="cursor: pointer;" />
+
+        <a href="/logout" class="logout-icon-link">
+          <img src="static/image/logout.png" alt="Logout Icon" class="logout-icon" />
+        </a>
+      </button>
+    </div>
+  </header>
+
+
+
+  <!-- Top Marquee -->
+  <div class="marquee">
+    <marquee direction="left"> 🎉🎉🎉Congratulations to all on the successful completion of 25 years of RailTel
+      Corporation of India Ltd. 🎉🎉🎉</marquee>
+  </div>
+
+  <!-- Main Content -->
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Left Block: YouTube Video -->
+    {% for video in videos %}
+    <div class="left-block">
+      <h3> 🎥 {{ video[0] }}</h3>
+      <iframe src="{{ video[1]}}" allowfullscreen></iframe>
+    </div>
+    {% endfor %}
+    <!-- Center Block: Announcements -->
+
+    <div class="center-block">
+      <h3>📢 Announcements</h3>
+      <ul class="announcements-list">
+        {% for announcement in announcements %}
+        <li>
+          📢
+          <a href="{% if 'http' in announcement[1] %}{{ announcement[1] }}{% else %}{{ url_for('static', filename=announcement[1]) }}{% endif %}"
+            target="_blank">
+            {{ announcement[0] }}
+          </a>
+        </li>
+        <hr>
+        {% endfor %}
+
+      </ul>
+    </div>
+
+
+
+    <!-- Right Block: Leaderboard -->
+    <!-- Right Block: Leaderboard -->
+
+    <!-- Leaderboard Section -->
+    <div class="leaderboard">
+      <h3>🏆 Leaderboard</h3>
+
+      <!-- Activity Header (Quiz Competition) -->
+      <div class="activity-header" onclick="toggleLeaderboard('quiz')">
+        📚 Quiz Competition
+      </div>
+      <div class="activity-table" id="quiz">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Employee Name</th>
+              <th>Badge</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Hermione</td>
+              <td><img src="static/image/gold.png" alt="Gold Badge"></td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Harry</td>
+              <td><img src="static/image/silver.png" alt="Silver Badge"></td>
+              <td>80</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Ron</td>
+              <td><img src="static/image/bronze.png" alt="Bronze Badge"></td>
+              <td>60</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Activity Header (Hackathon) -->
+      <div class="activity-header" onclick="toggleLeaderboard('hackathon')">
+        💻 Hackathon
+      </div>
+      <div class="activity-table" id="hackathon">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Employee Name</th>
+              <th>Badge</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Ankur</td>
+              <td><img src="static/image/gold.png" alt="Gold Badge"></td>
+              <td>120</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Aarav</td>
+              <td><img src="static/image/silver.png" alt="Silver Badge"></td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Avinash</td>
+              <td><img src="static/image/bronze.png" alt="Bronze Badge"></td>
+              <td>90</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Activity Header (Sports Quiz) -->
+      <div class="activity-header" onclick="toggleLeaderboard('sports')">
+        ⚽ Sports Quiz
+      </div>
+      <div class="activity-table" id="sports">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Employee Name</th>
+              <th>Badge</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Virat</td>
+              <td><img src="static/image/gold.png" alt="Gold Badge"></td>
+              <td>110</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Bumrah</td>
+              <td><img src="static/image/silver.png" alt="Silver Badge"></td>
+              <td>95</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Rohit</td>
+              <td><img src="static/image/bronze.png" alt="Bronze Badge"></td>
+              <td>85</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <!-- Activity Section -->
+  <!-- Activity Section -->
+  <div class="activity-container">
+    <!-- Badge Description Block -->
+    <div class="badge-description">
+      <h3>Miscellaneous Info</h3>
+      <p><img src="static/image/gold.png" alt="Gold" /> Top Performer</p>
+      <p><img src="static/image/silver.png" alt="Silver" /> Excellent Contributor</p>
+      <p><img src="static/image/bronze.png" alt="Bronze" /> Outstanding Effort</p>
+    </div>
+
+    <!-- Center Activity Block -->
+    <div class="activity-section">
+      <h3>📸 Image Gallery</h3>
+      <div class="carousel">
+        <button class="carousel-btn prev">&lt;</button>
+        <div class="carousel-images">
+          {% for image_path in gallery_images %}
+          <img src="{{ url_for('static', filename=image_path) }}" alt="Gallery Image" />
+          {% endfor %}
+        </div>
+        <button class="carousel-btn next">&gt;</button>
+      </div>
+      <div class="carousel-dots">
+        <!-- Dots will be generated dynamically -->
+      </div>
+    </div>
+
+
+    <!-- Right Block: Interact with CMD Button -->
+    <div class="interact-section">
+      <h3>📞 Interact with Team</h3>
+      <button onclick="openWebXMeeting()">Join WebX Meeting</button>
+      <p>{{ meeting_link_description }}</p>
+    </div>
+  </div>
+
+  <!-- <div class="activity">
+    <h3>Activity Section - Stay Updated!</h3>
+
+  </div> -->
+
+  <!-- Party Popper Animation -->
+  <div class="party-popper left-popper"></div>
+  <div class="party-popper right-popper"></div>
+  <canvas id="confettiCanvas"></canvas>
+  <div id="confettiText">RailTel 25th Anniversary</div>
+
+</body>
+
+<script src="static/js/index.js"></script>
+<script src="static/js/confetti.js"></script>
+
+<script>
+
+  // webX link
+
+  function openWebXMeeting() {
+    window.open("{{ meeting_link }}", "_blank");
+  }
+
+</script>
+
+
+</html>

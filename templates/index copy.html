@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailTel 25th Anniversary</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <!-- Video Background -->
+  <video autoplay muted loop id="background-video">
+    <source src="bg_wave.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Header Section -->
+  <header>
+    <!-- Left Section: Logo and RailTel -->
+    <div class="header-left">
+      <img src="railtel-logo80.png" alt="RailTel Logo" class="logo" />
+      <span class="railtel-text">RailTel Corporation Of India Ltd.</span>
+    </div>
+
+    <!-- Center Section: Silver Jubilee Connect -->
+    <h1 class="header-center">
+      <span class="jubilee-text">Silver Jubilee</span>
+    </h1>
+    <!-- Right Section: Badge and Employee ID -->
+    <div class="header-right">
+      <img src="gold.png" alt="Badge" class="badge" /> <br>
+      <span>Employee ID: 12345</span>
+    </div>
+  </header>
+
+
+
+  <!-- Top Marquee -->
+  <div class="marquee">
+    <marquee direction="left"> 🎉🎉🎉Congratulations to all on the successful completion of 25 years of RailTel
+      Corporation of India Ltd. 🎉🎉🎉</marquee>
+  </div>
+
+  <!-- Main Content -->
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Left Block: YouTube Video -->
+    <div class="left-block">
+      <h3>Bridging the Rural Disconnect & RailTel</h3>
+      <iframe src="https://www.youtube.com/embed/0qPkUDciLng?si=JFa9vF9egpW_p72L" allowfullscreen></iframe>
+    </div>
+
+    <!-- Center Block: Announcements -->
+    <div class="center-block">
+      <h3>📢 Announcements</h3>
+      <div class="announcements">
+        <marquee behavior="scroll" direction="up" scrollamount="3">
+          📢 Announcement 1: Meeting at 3 PM<br>
+          <hr>
+          📢 Announcement 2: Submit your reports!<br>
+          <hr>
+          📢 Announcement 3: Holiday on Friday!<br>
+          <hr>
+          📢 Announcement 4: New policy update released!<br>
+          <hr>
+          📢 Announcement 5: Team outing this weekend!
+        </marquee>
+      </div>
+    </div>
+
+    <!-- Right Block: Leaderboard -->
+    <!-- Right Block: Leaderboard -->
+    <div class="right-block">
+      <h3>🏆 Leaderboard</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Badge</th>
+            <th>Activity 1</th>
+            <th>Activity 2</th>
+            <th>Total Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td><img src="gold.png" alt="Gold Badge" class="badge-icon"></td>
+            <td>800</td>
+            <td>700</td>
+            <td>1500</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Jane Smith</td>
+            <td><img src="silver.png" alt="Silver Badge" class="badge-icon"></td>
+            <td>750</td>
+            <td>650</td>
+            <td>1400</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Alex Johnson</td>
+            <td><img src="bronze.png" alt="Bronze Badge" class="badge-icon"></td>
+            <td>700</td>
+            <td>650</td>
+            <td>1350</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Activity Section -->
+  <!-- Activity Section -->
+  <div class="activity-container">
+    <!-- Badge Description Block -->
+    <div class="badge-description">
+      <h3>🎖️ Badge Description</h3>
+      <p><img src="gold.png" alt="Gold" /> Top Performer</p>
+      <p><img src="silver.png" alt="Silver" /> Excellent Contributor</p>
+      <p><img src="bronze.png" alt="Bronze" /> Outstanding Effort</p>
+    </div>
+
+    <!-- Center Activity Block -->
+    <div class="activity-section">
+      <h3>Activity Section - Stay Updated!</h3>
+      <p>Don't miss any updates and events. Keep yourself engaged!</p>
+    </div>
+
+    <!-- Right Block: Interact with CMD Button -->
+    <div class="interact-section">
+      <h3>📞 Interact with Team</h3>
+      <button onclick="openWebXMeeting()">Join WebX Meeting</button>
+    </div>
+  </div>
+
+  <!-- <div class="activity">
+    <h3>Activity Section - Stay Updated!</h3>
+
+  </div> -->
+</body>
+
+<script>
+  function openWebXMeeting() {
+    window.open("https://webex.com/meeting-link", "_blank");
+  }
+</script>
+
+
+</html>

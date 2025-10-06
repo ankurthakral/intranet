@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="static/css/admin_login.css">
+</head>
+
+<body>
+  <div class="login-container">
+    <h1>Admin Portal</h1>
+    <p>Please use your RailTel email ID to log in.</p>
+
+    <!-- Admin Login Form -->
+    <form id="adminLoginForm" action="/admin-login" method="POST">
+      <div class="input-group">
+        <label for="adminEmail">Email:</label>
+        <input type="email" id="adminEmail" name="email" placeholder="yourname@railtelindia.com" required>
+      </div>
+      <div class="input-group">
+        <label for="adminPassword">Password:</label>
+        <input type="password" id="adminPassword" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="button" id="sendOtpBtn" onclick="sendOTP()">Send OTP</button>
+    </form>
+
+    <!-- OTP Verification Form -->
+    <form id="otpForm" action="/verify-admin-otp" method="POST" style="display: none;">
+      <div class="input-group">
+        <label for="adminOtp">OTP:</label>
+        <input type="text" id="adminOtp" name="otp" placeholder="Enter OTP" required>
+      </div>
+      <button type="button" id="verifyOtpBtn" onclick="validateOTP()">Verify OTP</button>
+    </form>
+
+    <!-- Message Section -->
+    <div id="message" class="message"></div>
+  </div>
+
+  <script src="static/js/admin_login.js"></script>
+</body>
+
+
+</html>

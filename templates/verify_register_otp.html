@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - RailTel Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+  <div class="container">
+    <img src="static/image/railtel-logo80.png" alt="RailTel Logo">
+    <h1>RailTel Events</h1>
+
+
+    <!-- OTP Section -->
+    <form id="otpForm" method="POST">
+      <div id="otpSection">
+        <h4 style="color: red;">Please Check your Official Mail Id and Enter the OTP.</h4>
+        <div class="otp-input-container">
+
+          <input type="hidden" id="csrfToken" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+        </div>
+      </div>
+      <button type="button" onclick="validateRegisterOTP()">Validate OTP</button>
+    </form>
+
+  </div>
+
+  <script>
+
+    async function validateRegisterOTP() {
+      const otpInputs = document.querySelectorAll(".otp-input");
+
+      const otp = Array.from(otpInputs).map(input => input.value.trim()).join("");
+
+
+      if (otp.length !== 6 || !/^\d+$/.test(otp)) {
+        alert("Please enter a valid 6-digit OTP.");
+        return;
+      }
+      const csrfToken = document.getElementById("csrfToken").value; // Get the CSRF token
+
+      // Simulate API call for OTP validation
+      try {
+
+        const formData = new FormData();
+        formData.append("otp", otp);
+
+        formData.append("csrf_token", csrfToken); // Include the CSRF token
+
+
+        const response = await fetch("/verify-register-otp", {
+          method: "POST",
+          body: formData
+        })
+
+
+        if (response.redirected) {
+          // Follow the backend redirect
+          window.location.href = response.url;
+        } else {
+          alert("Invalid OTP! Please, Try Again");
+          const result = await response.json();
+
+        }
+      } catch (error) {
+        alert("An error occurred while validating OTP. Please try again.");
+      }
+    }
+
+    document.querySelectorAll(".otp-input").forEach((input, index, inputs) => {
+      input.addEventListener("input", () => {
+        if (input.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && index > 0) {
+          inputs[index - 1].focus();
+        }
+        // Trigger form submission when Enter is pressed
+        if (e.key === "Enter") {
+          e.preventDefault();  // Prevent default action
+          validateRegisterOTP();  // Call the validate function
+        }
+      });
+    });
+
+
+  </script>
+
+</body>
+
+</html>
